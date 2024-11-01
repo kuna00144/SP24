@@ -1,13 +1,17 @@
 #include "kvs.h"
 
+kvs_t* open() {
+    kvs_t *db_instance = (kvs_t*)malloc(sizeof(kvs_t));
+    if (!db_instance) return NULL;
 
-kvs_t* open()
-{
-	kvs_t* kvs = (kvs_t*) malloc (sizeof(kvs_t));
+    db_instance->height = 1;
+    db_instance->itemCount = 0;
 
-	if(kvs)
-		kvs->items = 0;
-	printf("Open: kvs has %d items\n", kvs->items);
+    db_instance->header = (Node*)malloc(sizeof(Node));
+    db_instance->header->next = (Node**)malloc(sizeof(Node*) * MAX_HEIGHT);
+    for (int i = 0; i < MAX_HEIGHT; i++) {
+        db_instance->header->next[i] = NULL;
+    }
 
-	return kvs;
+    return db_instance;
 }
